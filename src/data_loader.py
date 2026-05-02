@@ -1,6 +1,9 @@
 import pandas as pd
-from src.config import DATA_PATH
 
-def load_data():
-    df = pd.read_csv(DATA_PATH)
+def load_data(path):
+    df = pd.read_csv(path, sep=" ", header=None)
+    return df
+
+def load_csv_data(path):
+    df = pd.read_csv(path)
     return df
