@@ -1,4 +1,4 @@
-# Credit Risk Classification (German Credit Dataset)
+# Credit Default Risk Classification (German Credit Dataset)
 
 ## Overview
 
@@ -6,10 +6,10 @@ This project builds a complete machine learning pipeline to predict credit defau
 
 The project focuses on:
 
-* Handling class imbalance
-* Controlling overfitting
-* Comparing multiple models
-* Evaluating using business-relevant metrics
+- Handling class imbalance
+- Controlling overfitting
+- Comparing multiple models
+- Evaluating using business-relevant metrics
 
 ---
 
@@ -17,19 +17,18 @@ The project focuses on:
 
 Predict whether a customer is likely to default on credit based on financial and demographic attributes.
 
-* Target Variable: `risk`
-
-  * `0` → Good (Non-defaulter)
-  * `1` → Bad (Defaulter)
+- Target Variable: `risk`
+    - `0` → Good (Non-defaulter)
+    - `1` → Bad (Defaulter)
 
 ---
 
 ## Dataset
 
-* Source: UCI German Credit Dataset
-* Samples: 1000
-* Type: Structured tabular data
-* Link: https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data
+- Source: UCI German Credit Dataset
+- Samples: 1000
+- Type: Structured tabular data
+- Link: https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data
 
 ---
 
@@ -37,24 +36,24 @@ Predict whether a customer is likely to default on credit based on financial and
 
 ### Core
 
-* Python 3.9
-* NumPy
-* pandas
+- Python 3.9
+- NumPy
+- pandas
 
 ### Visualization
 
-* matplotlib
-* seaborn
+- matplotlib
+- seaborn
 
 ### Machine Learning
 
-* scikit-learn
-* XGBoost
-* imbalanced-learn
+- scikit-learn
+- XGBoost
+- imbalanced-learn
 
 ### Utilities
 
-* joblib (model saving)
+- joblib (model saving)
 
 ---
 
@@ -88,33 +87,32 @@ credit-risk/
 
 1. **Data Loading**
 2. **Data Processing**
+    - Missing value handling
+    - Target mapping
 
-   * Missing value handling
-   * Target mapping
 3. **Feature Engineering**
+    - Derived features (e.g., credit per duration)
 
-   * Derived features (e.g., credit per duration)
 4. **Train-Test Split**
 5. **Model Pipelines**
+    - Encoding (OneHot + Ordinal)
+    - Scaling (for linear models only)
 
-   * Encoding (OneHot + Ordinal)
-   * Scaling (for linear models only)
 6. **Model Training**
+    - Logistic Regression
+    - Random Forest
+    - XGBoost
 
-   * Logistic Regression
-   * Random Forest
-   * XGBoost
 7. **Evaluation**
+    - Accuracy, Precision, Recall, F1-score
+    - ROC-AUC
+    - Confusion Matrix
+    - ROC Curve & Precision-Recall Curve
 
-   * Accuracy, Precision, Recall, F1-score
-   * ROC-AUC
-   * Confusion Matrix
-   * ROC Curve & Precision-Recall Curve
 8. **Reporting**
-
-   * Metrics saved as JSON
-   * Model comparison saved as CSV
-   * Plots saved in `reports/`
+    - Metrics saved as JSON
+    - Model comparison saved as CSV
+    - Plots saved in `reports/`
 
 ---
 
@@ -122,36 +120,36 @@ credit-risk/
 
 ### Logistic Regression
 
-* Strong baseline
-* Good generalization
-* Higher recall (detects defaulters better)
+- Strong baseline
+- Good generalization
+- Higher recall (detects defaulters better)
 
 ### Random Forest (Best Model)
 
-* Balanced precision & recall
-* Controlled overfitting
-* Best trade-off for business use
+- Balanced precision & recall
+- Controlled overfitting
+- Best trade-off for business use
 
 ### XGBoost
 
-* Strong performance
-* Slight overfitting observed
-* High potential with further tuning
+- Strong performance
+- Slight overfitting observed
+- High potential with further tuning
 
 ---
 
 ## Key Techniques
 
-* Class imbalance handling:
+- Class imbalance handling:
+    - `class_weight`
+    - `scale_pos_weight`
 
-  * `class_weight`
-  * `scale_pos_weight`
-* Overfitting control:
+- Overfitting control:
+    - Tree depth limitation
+    - Regularization
 
-  * Tree depth limitation
-  * Regularization
-* Threshold tuning (for recall improvement)
-* Pipeline-based preprocessing (no data leakage)
+- Threshold tuning (for recall improvement)
+- Pipeline-based preprocessing (no data leakage)
 
 ---
 
@@ -193,21 +191,21 @@ python main.py
 
 ## Key Learnings
 
-* Accuracy is not reliable for imbalanced datasets
-* Recall is critical in risk-sensitive problems
-* Overfitting must be actively controlled
-* Tree-based models require regularization
-* Threshold tuning can significantly improve performance
+- Accuracy is not reliable for imbalanced datasets
+- Recall is critical in risk-sensitive problems
+- Overfitting must be actively controlled
+- Tree-based models require regularization
+- Threshold tuning can significantly improve performance
 
 ---
 
 ## Future Improvements
 
-* Hyperparameter tuning (GridSearchCV / Optuna)
-* SMOTE integration and comparison
-* Cross-validation-based evaluation
-* Model deployment (FastAPI / Streamlit)
-* Experiment tracking (MLflow)
+- Hyperparameter tuning (GridSearchCV / Optuna)
+- SMOTE integration and comparison
+- Cross-validation-based evaluation
+- Model deployment (FastAPI / Streamlit)
+- Experiment tracking (MLflow)
 
 ---
 
