@@ -11,7 +11,7 @@ model = joblib.load("models/random_forest_model.joblib")
 app = FastAPI(title="Credit Default Risk Prediction API")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000", "https://creditdefaultrisk.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -41,10 +41,20 @@ def home():
 @app.post("/predict")
 def predict(candidate_data: CandidateData):
     input_df = pd.DataFrame([candidate_data.dict()])
-    prediction = model.predict(input_df)[0]
-    probability = model.predict_proba(input_df)[0][1]
+    prediction = int(model.predict(input_df)[0])
+    probability = float(model.predict_proba(input_df)[0][1])
+
+# Risk label
+    if probability < 0.3:
+        risk_level = "Low Risk"
+    elif probability < 0.6:
+        risk_level = "Medium Risk"
+    else:
+        risk_level = "High Risk"
 
     return {
-        "prediction": int(prediction),
-        "probability": float(probability)
+        "prediction": prediction,
+        "probability": probability,
+        "risk_level": risk_level,
+        "decision": "Likely to Default" if prediction == 1 else "Likely Non-Defaulter"
     }
