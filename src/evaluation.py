@@ -2,6 +2,7 @@ import os
 import json
 import numpy as np
 from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score, accuracy_score, precision_score, recall_score, f1_score
+from sklearn.model_selection import StratifiedKFold, cross_validate
 
 def evaluate_model(model, X, y):
     y_pred = model.predict(X)
@@ -36,6 +37,31 @@ def check_overfitting(model, X_train, y_train, X_test, y_test, name):
     print("Train AUC:", train_acc)
     print("Test AUC:", test_acc)
     print("Gap:", train_acc - test_acc)
+
+
+def cross_validate_model(pipeline, X, y, name, cv=5):
+    """
+    Runs stratified k-fold CV on the full dataset (before train/test split).
+    Uses pipeline directly — no data leakage since preprocessing is inside pipeline.
+    """
+    skf = StratifiedKFold(n_splits=cv, shuffle=True, random_state=42)
+
+    scoring = ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
+
+    results = cross_validate(pipeline, X, y, cv=skf, scoring=scoring, return_train_score=True)
+
+    print(f"\n--- {name} | {cv}-Fold Stratified CV ---")
+    for metric in scoring:
+        test_scores = results[f'test_{metric}']
+        train_scores = results[f'train_{metric}']
+        print(f"{metric:12s}: test={test_scores.mean():.4f} ± {test_scores.std():.4f} | "
+              f"train={train_scores.mean():.4f} | gap={train_scores.mean() - test_scores.mean():.4f}")
+
+    return {
+        f'cv_{metric}': results[f'test_{metric}'].mean()
+        for metric in scoring
+    }
+
 
 
 def convert_numpy(obj):

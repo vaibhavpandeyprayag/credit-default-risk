@@ -1,7 +1,7 @@
 from sklearn.model_selection import train_test_split
 from src.config import RANDOM_STATE, TARGET_COLUMN, DATA_PATH, TEST_SIZE
 from src.pipelines.model_pipelines import get_logistic_regression_pipeline, get_random_forest_pipeline, get_xgboost_pipeline
-from src.evaluation import evaluate_model, check_overfitting, save_model_metrics
+from src.evaluation import cross_validate_model, evaluate_model, check_overfitting, save_model_metrics
 from src.data_loader import load_data
 from src.data.data_processing import clean_and_prepare_data
 import joblib
@@ -22,7 +22,9 @@ def main():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=TEST_SIZE, random_state=RANDOM_STATE)
 
+    # Run CV on full data first — checks stability across splits
     lg_model = get_logistic_regression_pipeline()
+    cv_lg = cross_validate_model(lg_model, X, y, "Logistic Regression")
     lg_model.fit(X_train, y_train)
     lg_evaluation = evaluate_model(lg_model, X_test, y_test)
     print("Logistic Regression Results:")
@@ -41,6 +43,7 @@ def main():
     print("\n" + "="*50 + "\n")
 
     rf_model = get_random_forest_pipeline()
+    cv_rf = cross_validate_model(rf_model, X, y, "Random Forest")
     rf_model.fit(X_train, y_train)
     rf_evaluation = evaluate_model(rf_model, X_test, y_test)
     print("Random Forest Results:")
@@ -59,8 +62,8 @@ def main():
     print("\n" + "="*50 + "\n")
 
     xgb_model = get_xgboost_pipeline()
+    cv_xgb = cross_validate_model(xgb_model, X, y, "XGBoost")
     xgb_model.fit(X_train, y_train)
-
     xgb_evaluation = evaluate_model(xgb_model, X_test, y_test)
     print("XGBoost Results:")
     print(f"Accuracy: {xgb_evaluation['accuracy']}")
